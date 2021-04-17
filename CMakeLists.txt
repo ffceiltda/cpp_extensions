@@ -60,9 +60,12 @@ else()
 	add_compile_definitions(_REENTRANT)
 	add_compile_definitions(_LARGEFILE_SOURCE)
 	add_compile_definitions(_LARGEFILE64_SOURCE)
-	add_compile_definitions(_FILE_OFFSET_BITS=64)	
-	add_compile_definitions(_FORTIFY_SOURCE=2)
-	add_compile_definitions(_GNU_SOURCE)
+	add_compile_definitions(_FILE_OFFSET_BITS=64)
+
+	if(NOT (APPLE))
+		add_compile_definitions(_FORTIFY_SOURCE=2)
+		add_compile_definitions(_GNU_SOURCE)
+	endif()
 
 	# Compiler definitions
 	add_compile_options(-Wall)
