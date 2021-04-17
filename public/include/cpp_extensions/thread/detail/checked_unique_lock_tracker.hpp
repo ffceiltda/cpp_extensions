@@ -4,11 +4,13 @@
 #include <cpp_extensions/prolog.hpp>
 #include <cpp_extensions/debugger.hpp>
 #include <cpp_extensions/make_unique_lock.hpp>
-#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
-#include <cpp_extensions/thread/spin_lock.hpp>
-#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
 
+#if (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX_STD_MUTEX)
 #include <mutex>
+#elif (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX_SPIN_LOCK)
+#include <cpp_extensions/thread/spin_lock.hpp>
+#endif // (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == ?)
+
 #include <thread>
 #include <cstdint>
 
@@ -29,12 +31,11 @@ namespace cpp_extensions
             protected:
                 lockable_type m_lockable;
 
-#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
-                using internal_lockable_type = cpp_extensions::thread::spin_lock;
-#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
-#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_MUTEX
+#if (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX_STD_MUTEX)
                 using internal_lockable_type = std::mutex;
-#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_MUTEX
+#elif (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX_SPIN_LOCK)
+                using internal_lockable_type = cpp_extensions::thread::spin_lock;
+#endif // (CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_INTERNAL_MUTEX == ?)
 
             private:
                 internal_lockable_type m_unique_lock_tracker_mutex;
@@ -129,7 +130,7 @@ namespace cpp_extensions
                         return;
                     }
 
-                    bool result = lock_track_unique_current_thread([this]() { m_lockable.lock(); return true; });
+                    bool result = lock_track_unique_current_thread([this]() -> bool { m_lockable.lock(); return true; });
 
                     if (!result)
                     {
@@ -146,12 +147,12 @@ namespace cpp_extensions
                         return true;
                     }
 
-                    return lock_track_unique_current_thread([this]() { return m_lockable.try_lock(); });
+                    return lock_track_unique_current_thread([this]() -> bool { return m_lockable.try_lock(); });
                 }
 
                 void unlock()
                 {
-                    unlock_track_unique_current_thread([this]() { m_lockable.unlock(); });
+                    unlock_track_unique_current_thread([this]() -> void { m_lockable.unlock(); });
                 }
             };
         }

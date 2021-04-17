@@ -38,7 +38,7 @@ namespace cpp_extensions
 
                         if (iterator == std::end(m_shared_lock_thread_id_map))
                         {
-                            m_shared_lock_thread_id_map.emplace(shared_lock_thread_id, 1);
+                            m_shared_lock_thread_id_map.emplace(shared_lock_thread_id, 1U);
                         }
                         else
                         {
@@ -90,18 +90,18 @@ namespace cpp_extensions
 
                 void lock_shared()
                 {
-                    lock_track_shared_recursive_current_thread([this]() { this->m_lockable.lock_shared(); return true; });
+                    lock_track_shared_recursive_current_thread([this]() -> bool { this->m_lockable.lock_shared(); return true; });
                 }
 
                 [[nodiscard]]
                 bool try_lock_shared()
                 {
-                    return lock_track_shared_recursive_current_thread([this]() { return this->m_lockable.try_lock_shared(); });
+                    return lock_track_shared_recursive_current_thread([this]() -> bool { return this->m_lockable.try_lock_shared(); });
                 }
 
                 void unlock_shared()
                 {
-                    unlock_track_shared_recursive_current_thread([this]() { this->m_lockable.unlock_shared(); });
+                    unlock_track_shared_recursive_current_thread([this]() -> void { this->m_lockable.unlock_shared(); });
                 }
             };
 

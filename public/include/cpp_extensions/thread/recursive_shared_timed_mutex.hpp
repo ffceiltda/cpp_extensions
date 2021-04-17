@@ -31,7 +31,7 @@ namespace cpp_extensions
                     return true;
                 }
 
-                return this->lock_track_unique_current_thread([this, &timeout_duration]() { return this->m_lockable.try_lock_for(timeout_duration); });
+                return this->lock_track_unique_current_thread([this, &timeout_duration]() -> bool { return this->m_lockable.try_lock_for(timeout_duration); });
             }
 
             template <class Clock, class Duration>
@@ -43,7 +43,7 @@ namespace cpp_extensions
                     return true;
                 }
 
-                return this->lock_track_unique_current_thread([this, &timeout_time]() { return this->m_lockable.try_lock_until(timeout_time); });
+                return this->lock_track_unique_current_thread([this, &timeout_time]() -> bool { return this->m_lockable.try_lock_until(timeout_time); });
             }
 
             template <class Rep, class Period>

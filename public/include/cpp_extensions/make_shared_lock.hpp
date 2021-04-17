@@ -8,7 +8,8 @@
 namespace cpp_extensions
 {
 	template <typename LockableType, typename... ArgumentTypes>
-	static inline auto make_shared_lock(LockableType& lockable, ArgumentTypes&&... argument_values) noexcept
+    [[nodiscard]]
+	static inline std::shared_lock<LockableType> make_shared_lock(LockableType& lockable, ArgumentTypes&&... argument_values) noexcept
 		(noexcept(std::shared_lock<LockableType>(lockable, std::forward<ArgumentTypes>(argument_values) ...)))
 	{
 		return std::shared_lock<LockableType>(lockable, std::forward<ArgumentTypes>(argument_values) ...);

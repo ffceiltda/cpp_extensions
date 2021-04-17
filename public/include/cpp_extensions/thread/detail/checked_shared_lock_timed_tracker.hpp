@@ -28,14 +28,14 @@ namespace cpp_extensions
                 [[nodiscard]]
                 bool try_lock_shared_for(std::chrono::duration<Rep, Period> const& timeout_duration)
                 {
-                    return this->lock_track_shared_recursive_current_thread([this, &timeout_duration]() { return this->m_lockable.try_lock_shared_for(timeout_duration); });
+                    return this->lock_track_shared_recursive_current_thread([this, &timeout_duration]() -> bool { return this->m_lockable.try_lock_shared_for(timeout_duration); });
                 }
 
                 template <class Clock, class Duration>
                 [[nodiscard]]
                 bool try_lock_shared_until(std::chrono::time_point<Clock, Duration> const& timeout_time)
                 {
-                    return this->lock_track_shared_recursive_current_thread([this, &timeout_time]() { return this->m_lockable.try_lock_shared_until(timeout_time); });
+                    return this->lock_track_shared_recursive_current_thread([this, &timeout_time]() -> bool { return this->m_lockable.try_lock_shared_until(timeout_time); });
                 }
             };
         }

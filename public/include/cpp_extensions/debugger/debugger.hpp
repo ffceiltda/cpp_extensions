@@ -2,6 +2,12 @@
 #define _CPP_EXTENSIONS_DEBUGGER_DEBUGGER_HPP_
 
 #include <cpp_extensions/prolog.hpp>
+#if (CPP_EXTENSIONS_DEBUGGER_DETECT == CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API)
+#include <cpp_extensions/debugger/detail/debugger_detect_windows_api.hpp>
+#endif // (CPP_EXTENSIONS_DEBUGGER_DETECT == CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API)
+#if (CPP_EXTENSIONS_DEBUGGER_INTERRUPT == CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API)
+#include <cpp_extensions/debugger/detail/debugger_interrupt_windows_api.hpp>
+#endif // (CPP_EXTENSIONS_DEBUGGER_INTERRUPT == CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API)
 
 #include <iostream>
 
@@ -11,11 +17,12 @@ namespace cpp_extensions
 	{
 		static inline bool attached()
 		{
-			return false;
+			return detail::attached();
 		}
 
 		static inline void interrupt()
 		{
+			detail::interrupt();
 		}
 
 		static inline bool interrupt_if_attached()
@@ -34,12 +41,11 @@ namespace cpp_extensions
 		{
 			if (!value)
 			{
-				std::cerr << message << std::endl << std::flush;
+				std::cerr << "cpp_extensions::debugger::assert_expression - test failed: " << message << std::endl << std::flush;
 
-				if (!interrupt_if_attached())
-				{
-					std::terminate();
-				}
+				interrupt_if_attached();
+
+				std::terminate();
 			}
 		}
 	}

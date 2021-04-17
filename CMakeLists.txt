@@ -24,7 +24,7 @@ if(MSVC)
 	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 
 	# Compiler definitions
-	add_compile_options(/W4)
+	add_compile_options(/Wall)
 	add_compile_options(/WX)
 
 	# C+ language definitions
