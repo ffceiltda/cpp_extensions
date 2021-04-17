@@ -16,11 +16,11 @@ endif()
 
 if(MSVC)
 	# System definitions
-    add_compile_definitions(WINVER=0x0601)
+	add_compile_definitions(WINVER=0x0601)
 	add_compile_definitions(_WIN32_WINNT=0x0601)
-    add_compile_definitions(_CRT_NONSTDC_NO_DEPRECATE)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-    add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS)
+	add_compile_definitions(_CRT_NONSTDC_NO_DEPRECATE)
+	add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+	add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS)
 	add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 
 	# Compiler definitions
