@@ -3,12 +3,15 @@
 
 #include <cpp_extensions/prolog.hpp>
 
+#include <immintrin.h>
+
 namespace cpp_extensions
 {
 	namespace intrinsics
 	{
-		static inline void cpu_idle_pause()
+		static inline void cpu_pause()
 		{
+			_mm_pause();
 		}
 	}
 }

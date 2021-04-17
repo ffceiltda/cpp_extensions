@@ -2,7 +2,7 @@
 #define _CPP_EXTENSIONS_THREAD_SPIN_LOCK_HPP_
 
 #include <cpp_extensions/prolog.hpp>
-#include <cpp_extensions/intrinsics.hpp>
+#include <cpp_extensions/thread.hpp>
 
 #include <atomic>
 
@@ -53,13 +53,11 @@ namespace cpp_extensions
 
                     while (m_flag.load(std::memory_order_relaxed))
                     {
-                        ++loop_count;
-
-                        if (loop_count > m_spin_count_before_pause)
+                        if (++loop_count > m_spin_count_before_pause)
                         {
                             loop_count = 0;
 
-                            cpp_extensions::intrinsics::cpu_idle_pause();
+                            cpp_extensions::this_thread::yield();
                         }
                     }
                 }
