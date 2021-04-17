@@ -2,7 +2,11 @@
 #define _CPP_EXTENSIONS_THREAD_CHECKED_UNIQUE_LOCK_TRACKER_HPP_
 
 #include <cpp_extensions/prolog.hpp>
+#include <cpp_extensions/debugger.hpp>
 #include <cpp_extensions/make_unique_lock.hpp>
+#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
+#include <cpp_extensions/thread/spin_lock.hpp>
+#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
 
 #include <mutex>
 #include <thread>
@@ -19,19 +23,27 @@ namespace cpp_extensions
             {
             public:
                 using lockable_type = LockableType;
-                
+
                 constexpr static bool const recursive = Recursive;
 
             protected:
                 lockable_type m_lockable;
 
+#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
+                using internal_lockable_type = cpp_extensions::thread::spin_lock;
+#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_SPIN_LOCK
+#ifdef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_MUTEX
+                using internal_lockable_type = std::mutex;
+#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES_USE_MUTEX
+
             private:
-                std::mutex m_unique_lock_tracker_mutex;
+                internal_lockable_type m_unique_lock_tracker_mutex;
                 std::thread::id m_unique_lock_thread_id = {};
                 size_t m_unique_lock_recursion_count = 0;
 
             protected:
                 template <typename LockFunctorType>
+                [[nodiscard]]
                 bool lock_track_unique_current_thread(LockFunctorType&& lock_functor)
                 {
                     auto const locked = lock_functor();
@@ -49,6 +61,7 @@ namespace cpp_extensions
                     return locked;
                 }
 
+                [[nodiscard]]
                 bool try_lock_track_unique_current_thread()
                 {
                     auto const unique_lock_thread_id = std::this_thread::get_id();
@@ -116,9 +129,16 @@ namespace cpp_extensions
                         return;
                     }
 
-                    lock_track_unique_current_thread([this]() { m_lockable.lock(); return true; });
+                    bool result = lock_track_unique_current_thread([this]() { m_lockable.lock(); return true; });
+
+                    if (!result)
+                    {
+                        [[unlikely]]
+                        cpp_extensions::debugger::assert_expression(result, "lock() method failure");
+                    }
                 }
 
+                [[nodiscard]]
                 bool try_lock()
                 {
                     if (try_lock_track_unique_current_thread())

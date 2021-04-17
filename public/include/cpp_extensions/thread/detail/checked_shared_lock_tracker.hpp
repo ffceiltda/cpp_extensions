@@ -19,7 +19,7 @@ namespace cpp_extensions
                 : public UniqueLockableType
             {
             private:
-                std::mutex m_shared_lock_tracker_mutex;
+                typename UniqueLockableType::internal_lockable_type m_shared_lock_tracker_mutex;
                 std::unordered_map<std::thread::id, size_t> m_shared_lock_thread_id_map = {};
 
             protected:
@@ -93,6 +93,7 @@ namespace cpp_extensions
                     lock_track_shared_recursive_current_thread([this]() { this->m_lockable.lock_shared(); return true; });
                 }
 
+                [[nodiscard]]
                 bool try_lock_shared()
                 {
                     return lock_track_shared_recursive_current_thread([this]() { return this->m_lockable.try_lock_shared(); });

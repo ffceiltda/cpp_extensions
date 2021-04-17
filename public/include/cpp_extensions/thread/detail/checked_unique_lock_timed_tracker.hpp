@@ -26,6 +26,7 @@ namespace cpp_extensions
                 checked_unique_lock_timed_tracker& operator = (checked_unique_lock_timed_tracker&&) = delete;
 
                 template <class Rep, class Period>
+                [[nodiscard]]
                 bool try_lock_for(std::chrono::duration<Rep, Period> const& timeout_duration)
                 {
                     if (this->try_lock_track_unique_recursive_current_thread())
@@ -37,6 +38,7 @@ namespace cpp_extensions
                 }
 
                 template <class Clock, class Duration>
+                [[nodiscard]]
                 bool try_lock_until(std::chrono::time_point<Clock, Duration> const& timeout_time)
                 {
                     if (this->try_lock_track_unique_recursive_current_thread())

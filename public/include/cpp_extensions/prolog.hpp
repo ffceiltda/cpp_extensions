@@ -1,14 +1,6 @@
 #ifndef _CPP_EXTENSIONS_PROLOG_HPP_
 #define _CPP_EXTENSIONS_PROLOG_HPP_
 
-#ifdef NDEBUG
-
-#undef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
-
-#else // NDEBUG
-
-#define CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
-
-#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
+#include <cpp_extensions/thread/detail/checked_mutex_config.hpp>
 
 #endif // _CPP_EXTENSIONS_PROLOG_HPP_

@@ -23,6 +23,7 @@ namespace cpp_extensions
             recursive_shared_timed_mutex& operator = (recursive_shared_timed_mutex&&) = delete;
 
             template <class Rep, class Period>
+            [[nodiscard]]
             bool try_lock_for(std::chrono::duration<Rep, Period> const& timeout_duration)
             {
                 if (this->try_lock_track_unique_current_thread())
@@ -34,6 +35,7 @@ namespace cpp_extensions
             }
 
             template <class Clock, class Duration>
+            [[nodiscard]]
             bool try_lock_until(std::chrono::time_point<Clock, Duration> const& timeout_time)
             {
                 if (this->try_lock_track_unique_current_thread())
@@ -45,12 +47,14 @@ namespace cpp_extensions
             }
 
             template <class Rep, class Period>
+            [[nodiscard]]
             bool try_lock_shared_for(std::chrono::duration<Rep, Period> const& timeout_duration)
             {
                 return this->m_lockable.try_lock_shared_for(timeout_duration);
             }
 
             template <class Clock, class Duration>
+            [[nodiscard]]
             bool try_lock_shared_until(std::chrono::time_point<Clock, Duration> const& timeout_time)
             {
                 return this->m_lockable.try_lock_shared_until(timeout_time);

@@ -10,21 +10,19 @@ namespace cpp_extensions
 {
 	namespace this_thread
 	{
-		static inline void yield()
+		static inline void pause_or_yield()
 		{
-			static std::atomic<int> value {};
+			static bool pausing = false;
 
-			int const new_value = value.fetch_add(1, std::memory_order_acquire);
+			const bool value = (pausing = !pausing);
 			 
-			if (new_value < 16)
+			if (value)
 			{
 				cpp_extensions::intrinsics::cpu_pause();
 			}
 			else
 			{
 				std::this_thread::yield();
-
-				value.store(0, std::memory_order_release);
 			}
 		}
 	}

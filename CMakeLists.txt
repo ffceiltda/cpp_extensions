@@ -11,7 +11,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 	set(CMAKE_INCLUDE_DEBUG_INFORMATION TRUE)
 else()
 	set(CMAKE_GENERATE_DEBUG_BUILD FALSE)
-	set(CMAKE_INCLUDE_DEBUG_INFORMATION FALSE)
+	set(CMAKE_INCLUDE_DEBUG_INFORMATION TRUE)
 endif()
 
 if(MSVC)
@@ -79,6 +79,7 @@ else()
 	# Debug information	
 	if("${CMAKE_INCLUDE_DEBUG_INFORMATION}" STREQUAL "TRUE")
 		add_compile_options(-g)
+		add_compile_options(-fno-omit-frame-pointer)
 	endif()
 
 	# Optimizations

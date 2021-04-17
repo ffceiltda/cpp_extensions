@@ -27,6 +27,7 @@ namespace cpp_extensions
                 m_lockable.lock_shared();
             }
 
+            [[nodiscard]]
             bool try_lock_shared()
             {
                 return m_lockable.try_lock_shared();
