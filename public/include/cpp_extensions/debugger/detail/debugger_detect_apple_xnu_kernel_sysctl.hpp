@@ -13,12 +13,12 @@ extern "C"
 
 namespace cpp_extensions
 {
-	namespace debugger
-	{
-		namespace detail
-		{
-			static inline bool attached()
-			{
+    namespace debugger
+    {
+        namespace detail
+        {
+            static inline bool attached()
+            {
                 static bool cached_result = false;
                 static std::chrono::steady_clock::time_point last_os_pool = {};
 
@@ -43,9 +43,9 @@ namespace cpp_extensions
                 }
 
                 return cached_result;
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
 #endif // _CPP_EXTENSIONS_DEBUGGER_DETAIL_DEBUGGER_DETECT_APPLE_XNU_KERNEL_SYSCTL_HPP_

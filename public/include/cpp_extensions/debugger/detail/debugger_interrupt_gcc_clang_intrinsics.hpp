@@ -37,12 +37,12 @@ namespace cpp_extensions
 #elif defined(__powerpc__)
 			static inline void interrupt()
 			{
-				__asm__ volatile(".4byte 0x7d821008"); 
+				__asm__ volatile(".4byte 0x7d821008");
 			}
 #elif defined(__riscv)
 			static inline void interrupt()
 			{
-				__asm__ volatile(".4byte 0x00100073"); 
+				__asm__ volatile(".4byte 0x00100073");
 			}
 #elif defined(SIGTRAP)
 			static inline void interrupt()
