@@ -14,8 +14,6 @@
 #include <cpp_extensions/make_unique_lock.hpp>
 #include <cpp_extensions/make_shared_lock.hpp>
 
-#include <Windows.h>
-
 template <typename Lockable>
 bool test_unique_locks(bool const recursive = false)
 {

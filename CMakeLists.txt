@@ -61,9 +61,8 @@ else()
 	add_compile_definitions(_LARGEFILE_SOURCE)
 	add_compile_definitions(_LARGEFILE64_SOURCE)
 	add_compile_definitions(_FILE_OFFSET_BITS=64)	
-	add_compile_definitions(_GNU_SOURCE)
 	add_compile_definitions(_FORTIFY_SOURCE=2)
-	add_compile_definitions(_POSIX_C_SOURCE=200809L)
+	add_compile_definitions(_GNU_SOURCE)
 
 	# Compiler definitions
 	add_compile_options(-Wall)
@@ -71,6 +70,10 @@ else()
 	add_compile_options(-Werror)
 	add_compile_options(-pedantic)
 	add_compile_options(-pedantic-errors)
+
+	if(APPLE)
+		add_compile_options(-Wno-unknown-attributes)
+	endif()
 
 	# C+ language definitions
 	add_compile_options(-fexceptions)

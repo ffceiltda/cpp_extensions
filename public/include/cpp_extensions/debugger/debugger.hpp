@@ -4,9 +4,13 @@
 #include <cpp_extensions/prolog.hpp>
 #if (CPP_EXTENSIONS_DEBUGGER_DETECT == CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API)
 #include <cpp_extensions/debugger/detail/debugger_detect_windows_api.hpp>
+#elif (CPP_EXTENSIONS_DEBUGGER_DETECT == CPP_EXTENSIONS_DEBUGGER_DETECT_APPLE_XNU_KERNEL_SYSCTL)
+#include <cpp_extensions/debugger/detail/debugger_detect_apple_xnu_kernel_sysctl.hpp>
 #endif // (CPP_EXTENSIONS_DEBUGGER_DETECT == CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API)
 #if (CPP_EXTENSIONS_DEBUGGER_INTERRUPT == CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API)
 #include <cpp_extensions/debugger/detail/debugger_interrupt_windows_api.hpp>
+#elif (CPP_EXTENSIONS_DEBUGGER_INTERRUPT == CPP_EXTENSIONS_DEBUGGER_INTERRUPT_GCC_CLANG_INTRINSICS)
+#include <cpp_extensions/debugger/detail/debugger_interrupt_gcc_clang_intrinsics.hpp>
 #endif // (CPP_EXTENSIONS_DEBUGGER_INTERRUPT == CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API)
 
 #include <iostream>

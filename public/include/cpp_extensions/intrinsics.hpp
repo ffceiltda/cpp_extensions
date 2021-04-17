@@ -3,7 +3,10 @@
 
 #include <cpp_extensions/prolog.hpp>
 
+extern "C"
+{
 #include <immintrin.h>
+}
 
 namespace cpp_extensions
 {
