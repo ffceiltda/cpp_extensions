@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 
 project (cpp_extensions LANGUAGES CXX C)
 
+message(STATUS "vcpkg toolchain file at ${CMAKE_TOOLCHAIN_FILE}")
+
 find_package(Threads REQUIRED)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
