@@ -3,54 +3,57 @@
 
 #define CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API													1
 #define CPP_EXTENSIONS_DEBUGGER_DETECT_APPLE_XNU_KERNEL_SYSCTL										2
+#define CPP_EXTENSIONS_DEBUGGER_DETECT_LINUX_PROCFS													3
 
 #define CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API												1
 #define CPP_EXTENSIONS_DEBUGGER_INTERRUPT_GCC_CLANG_INTRINSICS										2
 
+#ifdef CPP_EXTENSIONS_DEBUGGER_DETECT
 #if __has_include(<Windows.h>)
 #if __has_include(<Ws2tcpip.h>)
 #include <Ws2tcpip.h>
 #endif // __has_include(<Ws2tcpip.h>)
-
 #include <Windows.h>
-
 #if (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-
-#ifndef CPP_EXTENSIONS_DEBUGGER_DETECT
 #define CPP_EXTENSIONS_DEBUGGER_DETECT																CPP_EXTENSIONS_DEBUGGER_DETECT_WINDOWS_API
+#endif // (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#endif // __has_include(<Windows.h>)
 #endif // CPP_EXTENSIONS_DEBUGGER_DETECT
 
-#ifndef CPP_EXTENSIONS_DEBUGGER_INTERRUPT
-#define CPP_EXTENSIONS_DEBUGGER_INTERRUPT															CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API
-#endif // CPP_EXTENSIONS_DEBUGGER_INTERRUPT
+#ifndef CPP_EXTENSIONS_DEBUGGER_DETECT
+#if defined(__linux__)
+#define CPP_EXTENSIONS_DEBUGGER_DETECT																CPP_EXTENSIONS_DEBUGGER_DETECT_LINUX_PROCFS
+#endif // defined(__linux__)
+#endif // CPP_EXTENSIONS_DEBUGGER_DETECT
 
-#endif // (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-
-#endif // __has_include(<Windows.h>)
-
+#ifndef CPP_EXTENSIONS_DEBUGGER_DETECT
 #if __has_include(<unistd.h>)
-
 extern "C"
 {
 #include <unistd.h>
 }
-
 #ifdef __AVAILABILITY_VERSIONS__
-
-#ifndef CPP_EXTENSIONS_DEBUGGER_DETECT
 #define CPP_EXTENSIONS_DEBUGGER_DETECT																CPP_EXTENSIONS_DEBUGGER_DETECT_APPLE_XNU_KERNEL_SYSCTL
+#endif // __AVAILABILITY_VERSIONS__
+#endif // __has_include(<unistd.h>)
 #endif // CPP_EXTENSIONS_DEBUGGER_DETECT
 
-#endif // __AVAILABILITY_VERSIONS__
-
-#endif // __has_include(<unistd.h>)
-
-#if (defined(__GNUC__) || defined(__clang__))
-
-#ifndef CPP_EXTENSIONS_DEBUGGER_INTERRUPT
-#define CPP_EXTENSIONS_DEBUGGER_INTERRUPT															CPP_EXTENSIONS_DEBUGGER_INTERRUPT_GCC_CLANG_INTRINSICS
+#ifdef CPP_EXTENSIONS_DEBUGGER_INTERRUPT
+#if __has_include(<Windows.h>)
+#if __has_include(<Ws2tcpip.h>)
+#include <Ws2tcpip.h>
+#endif // __has_include(<Ws2tcpip.h>)
+#include <Windows.h>
+#if (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#define CPP_EXTENSIONS_DEBUGGER_INTERRUPT															CPP_EXTENSIONS_DEBUGGER_INTERRUPT_WINDOWS_API
+#endif // (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+#endif // __has_include(<Windows.h>)
 #endif // CPP_EXTENSIONS_DEBUGGER_INTERRUPT
 
+#ifndef CPP_EXTENSIONS_DEBUGGER_INTERRUPT
+#if (defined(__GNUC__) || defined(__clang__))
+#define CPP_EXTENSIONS_DEBUGGER_INTERRUPT															CPP_EXTENSIONS_DEBUGGER_INTERRUPT_GCC_CLANG_INTRINSICS
 #endif // (defined(__GNUC__) || defined(__clang__))
+#endif // CPP_EXTENSIONS_DEBUGGER_INTERRUPT
 
 #endif // _CPP_EXTENSIONS_DEBUGGER_DETAIL_DEBUGGER_SUPPORT_METHODS_CONFIGURATION_HPP_

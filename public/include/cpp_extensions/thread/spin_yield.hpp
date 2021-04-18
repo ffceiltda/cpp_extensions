@@ -3,7 +3,6 @@
 
 #include <cpp_extensions/prolog.hpp>
 #include <cpp_extensions/intrinsics.hpp>
-#include <cpp_extensions/thread.hpp>
 
 #include <cstdint>
 
