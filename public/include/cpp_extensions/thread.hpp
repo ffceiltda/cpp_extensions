@@ -15,7 +15,7 @@ namespace cpp_extensions
 			static bool pausing = false;
 
 			const bool value = (pausing = !pausing);
-			 
+
 			if (value)
 			{
 				cpp_extensions::intrinsics::cpu_pause();

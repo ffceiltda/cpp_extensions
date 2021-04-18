@@ -80,7 +80,7 @@ else()
 
 	# C+ language definitions
 	add_compile_options(-fexceptions)
-	add_compile_options(-std=c++2a)
+	add_compile_options(-std=c++20)
 
 	# Debug information	
 	if("${CMAKE_INCLUDE_DEBUG_INFORMATION}" STREQUAL "TRUE")

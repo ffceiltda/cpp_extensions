@@ -8,11 +8,11 @@
 namespace cpp_extensions
 {
 	using recursive_shared_timed_mutex =
-#ifndef CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
+#ifndef CPP_EXTENSIONS_CHECKED_SYNCHRONIZATION_OBJECTS
 		thread::fast_recursive_shared_timed_mutex
-#else // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
+#else // CPP_EXTENSIONS_CHECKED_SYNCHRONIZATION_OBJECTS
 		thread::checked_recursive_shared_timed_mutex
-#endif // CPP_EXTENSIONS_CHECKED_DEBUG_MUTEXES
+#endif // CPP_EXTENSIONS_CHECKED_SYNCHRONIZATION_OBJECTS
 		;
 }
 
