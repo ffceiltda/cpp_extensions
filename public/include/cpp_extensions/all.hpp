@@ -16,6 +16,8 @@
 #include <cpp_extensions/recursive_shared_timed_mutex.hpp>
 #include <cpp_extensions/spin_yield.hpp>
 #include <cpp_extensions/spin_lock.hpp>
+#include <cpp_extensions/latch.hpp>
+#include <cpp_extensions/barrier.hpp>
 #include <cpp_extensions/binary_semaphore.hpp>
 #include <cpp_extensions/counting_semaphore.hpp>
 #include <cpp_extensions/manual_semaphore.hpp>
